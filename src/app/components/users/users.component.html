@@ -1,72 +1,74 @@
 <div class="container justify-content-center">
-    <div class="col-md-6 col-sm-8">
-        <button class="btn btn-dark mb-3" (click)="showForm = !showForm">Add User</button> 
-        <form class="form card card-body" *ngIf="showForm" 
+  <div class="row">
+    <div class="col-md-6 col-sm-6">
+      <button class="btn btn-dark mb-3" (click)="showForm = !showForm">Add User</button>
+      <form class="form card card-body mb-2" *ngIf="showForm"
         #userForm = "ngForm"
         (ngSubmit)='onSubmit(userForm)' >
-            <div class="form-group">
+        <div class="form-group">
+            <!-- firstName -->
+            <label>Firstname</label>
+            <input
+            type="text"
+            name="firstName"
+            [ngClass]="{'is-invalid': userfirstName.errors && userfirstName.touched}"
+            [(ngModel)]="user.firstName"
+            class="form-control"
+            #userfirstName="ngModel"
+            required
+            minlength="3"
+            >
+            <div [hidden]="!userfirstName.errors?.required"
+            class="invalid-feedback"> Firstname Required </div>
+            <div [hidden]="!userfirstName.errors?.minlength"
+            class="invalid-feedback"> Must be 3 Character long </div>
 
-                <!-- firstName -->
-                <label>Firstname</label>
-                <input
-                type="text"
-                name="firstName"
-                [ngClass]="{'is-invalid': userfirstName.errors && userfirstName.touched}"
-                [(ngModel)]="user.firstName"
-                class="form-control"
-                #userfirstName="ngModel"
-                required
-                minlength="3"
-                >
-                <div [hidden]="!userfirstName.errors?.required"
-                 class="invalid-feedback"> Firstname Required </div>
-                <div [hidden]="!userfirstName.errors?.minlength"
-                 class="invalid-feedback"> Must be 3 Character long </div>
-                
-                <!-- Lastname -->
-                <label>Lastname</label>
-                <input
-                type="text"
-                name="lastName"
-                [ngClass]="{'is-invalid': userlastName.errors && userlastName.touched}"
-                [(ngModel)]="user.lastName"
-                class="form-control"
-                #userlastName="ngModel"
-                required
-                minlength="3"
-                >
-                <div [hidden]="!userlastName.errors?.required"
-                 class="invalid-feedback"> Lastname Required </div>
-                <div [hidden]="!userlastName.errors?.minlength"
-                 class="invalid-feedback"> Must be 3 Character long </div>
+            <!-- Lastname -->
+            <label>Lastname</label>
+            <input
+            type="text"
+            name="lastName"
+            [ngClass]="{'is-invalid': userlastName.errors && userlastName.touched}"
+            [(ngModel)]="user.lastName"
+            class="form-control"
+            #userlastName="ngModel"
+            required
+            minlength="3"
+            >
+            <div [hidden]="!userlastName.errors?.required"
+            class="invalid-feedback"> Lastname Required </div>
+            <div [hidden]="!userlastName.errors?.minlength"
+            class="invalid-feedback"> Must be 3 Character long </div>
 
-                <!-- email -->
-                <label>Email</label>
-                <input
-                type="text"
-                name="email"
-                [ngClass]="{'is-invalid': userEmail.errors && userEmail.touched}"
-                [(ngModel)]="user.email"
-                class="form-control"
-                #userEmail="ngModel"
-                required
-                pattern="^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$"
-                > 
-                <div [hidden]="!userEmail.errors?.required"
-                 class="invalid-feedback"> Email Required </div>
-                <div [hidden]="!userEmail.errors?.pattern"
-                 class="invalid-feedback"> Email is not Valid</div>         
-            </div>  
-            <button class="btn btn-block btn-light mb-2"
-            [disabled]="!userForm.form.valid">Add User</button> 
-        </form>
-        <h3>Users</h3>
-        <div class="card card-body mb-2" *ngFor='let user of users' [class.bg-light] = 'user.isActive'>
+            <!-- email -->
+            <label>Email</label>
+            <input
+            type="text"
+            name="email"
+            [ngClass]="{'is-invalid': userEmail.errors && userEmail.touched}"
+            [(ngModel)]="user.email"
+            class="form-control"
+            #userEmail="ngModel"
+            required
+            pattern="^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$"
+            >
+            <div [hidden]="!userEmail.errors?.required"
+            class="invalid-feedback"> Email Required </div>
+            <div [hidden]="!userEmail.errors?.pattern"
+            class="invalid-feedback"> Email is not Valid</div>
+        </div>
+        <button class="btn btn-block btn-light mb-2"
+        [disabled]="!userForm.form.valid">Add User</button>
+      </form>
+    </div>
+    <div class="col-md-6 col-sm-8">
+      <h3>Users</h3>
+      <div class="card card-body mb-2" *ngFor='let user of users' [class.bg-light] = 'user.isActive'>
         <h6 class="pt-2">{{ user.firstName | uppercase }} {{ user.lastName | uppercase }}
             <small>
                 <i [ngClass]="!user.expand ? 'fa fa-plus-square float-right pt-1' : 'fa fa-minus-square float-right pt-1'"
                     (click) = "user.expand = !user.expand"
-                  *ngIf="user.email || user.joined"> </i>
+                    *ngIf="user.email || user.joined"> </i>
             </small>
         </h6>
         <div *ngIf='user.expand && (user.email || user.joined)'>
@@ -77,6 +79,7 @@
                 Join Date: {{ user.joined | date }}
             </li>
         </div>
-        </div>
+      </div>
     </div>
+  </div>
 </div>
