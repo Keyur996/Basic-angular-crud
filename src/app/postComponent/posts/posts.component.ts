@@ -27,6 +27,7 @@ export class PostsComponent implements OnInit {
 
   onNewPost = (post: Posts): void  => {
     this.posts.unshift(post);
+    swal('Created...', 'Post Added Successfully', 'success');
   }
 
   editPost = (post: Posts): void => {
@@ -45,6 +46,7 @@ export class PostsComponent implements OnInit {
           title: '',
           body: ''
         }
+        swal('Upadted....', 'Post Updated Successfully', 'success');
       }
     });
   };
@@ -63,8 +65,14 @@ export class PostsComponent implements OnInit {
           this.posts.forEach((cur, index) => {
             if (post.id === cur.id) {
               this.posts.splice(index, 1);
+              swal('Deleted..','Post Deleted successfully..', 'success')
             }
           });
+        });
+      } else {
+        swal({
+          title: 'You are safe!!',
+          icon: 'info',
         });
       }
     });
