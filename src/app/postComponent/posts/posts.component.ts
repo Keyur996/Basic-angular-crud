@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PostsService } from 'src/app/services/posts.service';
 import { Posts } from 'src/models/Posts';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-posts',
@@ -49,15 +50,24 @@ export class PostsComponent implements OnInit {
   };
 
   removePost = (post: Posts) => {
-    if (confirm('Are You sure?')) {
-      this.postService.deletePost(post.id).subscribe(() => {
-        this.posts.forEach((cur, index) => {
-          if (post.id === cur.id) {
-            this.posts.splice(index, 1);
-          }
+    swal({
+      title: 'Are you sure ?',
+      text: 'Can not Recover data',
+      icon: 'warning',
+      buttons: ['Cancel', true],
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        this.postService.deletePost(post.id).subscribe(() => {
+          this.posts.forEach((cur, index) => {
+            if (post.id === cur.id) {
+              this.posts.splice(index, 1);
+            }
+          });
         });
-      });
-    }
+      }
+    });
   }
 
 }

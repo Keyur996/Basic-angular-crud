@@ -22,6 +22,7 @@ export class PostFormComponent implements OnInit {
   addPost = (title: string, body: string ): void => {
     if (!title || !body) {
       swal({
+        text: 'Title and body is required field',
         title: 'Please Enter Data'
       });
     } else {
