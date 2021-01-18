@@ -1,5 +1,6 @@
 <div class="card mt-4">
-  <h2 class="card-header">Add Post</h2>
+  <h2 *ngIf='!isEdit' class="card-header">Add Post</h2>
+  <h2 *ngIf='isEdit' class="card-header">Update Post</h2>
   <div class="card-body">
     <form>
       <div class="form-group">

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PostsService } from 'src/app/services/posts.service';
 import { Posts } from 'src/models/Posts';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-post-form',
@@ -18,9 +19,11 @@ export class PostFormComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  addPost = (title, body): void => {
+  addPost = (title: string, body: string ): void => {
     if (!title || !body) {
-      alert('Please Enter Data');
+      swal({
+        title: 'Please Enter Data'
+      });
     } else {
       this.postService.savePost({title, body} as Posts).subscribe(post => {
         this.newPost.emit(post);
