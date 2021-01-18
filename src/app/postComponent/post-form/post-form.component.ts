@@ -32,7 +32,7 @@ export class PostFormComponent implements OnInit {
     }
   }
 
-  updatePost = () => {
+  updatePost = () : void => {
     this.postService.updatePost(this.currentPost).subscribe(post => {
       // console.log(post);
       this.isEdit = false;
