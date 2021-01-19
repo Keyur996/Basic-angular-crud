@@ -8,7 +8,7 @@ export class DataService {
   users: Users[];
 
   constructor() {
-        this.users = [
+    this.users = [
       {
         firstName: 'Keyur',
         lastName: 'Machhi',
@@ -37,5 +37,24 @@ export class DataService {
     user.joined = new Date();
     user.expand = false;
     this.users.unshift(user);
+  }
+
+  updateUser = (user: Users) => {
+    this.users.forEach((cur: Users, index) => {
+      if (cur.email === user.email) {
+        console.log(user);
+        this.users.splice(index, 1);
+        this.users.unshift(user);
+      }
+    });
+  }
+
+  removeUser = (user: Users) => {
+    this.users.forEach((cur: Users, index) => {
+      if (cur.email === user.email) {
+        this.users.splice(index, 1);
+        console.log(this.users.length);
+      }
+    });
   }
 }

@@ -66,28 +66,33 @@
       </form>
     </div>
     <div class="col-md-6 col-sm-8">
-      <h3>Users</h3>
-      <div class="card card-body mb-2" *ngFor='let user of users' [class.bg-light] = 'user.isActive'>
-        <h6 class="pt-2">{{ user.firstName | uppercase }} {{ user.lastName | uppercase }}
-            <small class="float-right">
-                <button (click) = "editUser(user)" class="btn btn-outline-primary mr-2 my-0"><i class="fa fa-pencil"></i></button>
-                <button (click) = "daleteUser(user)" class="btn btn-outline-danger mr-2"><i class="fa fa-remove"></i></button>
-                <button class="btn btn-outline-info"
-                    (click) = "user.expand = !user.expand"
-                    *ngIf="user.email || user.joined">
-                    <i [ngClass]="!user.expand ? 'fa fa-plus-square-o pt-1' : 'fa fa-minus-square-o pt-1'"></i>
-                </button>
-            </small>
-        </h6>
-        <div *ngIf='user.expand && (user.email || user.joined)'>
-            <li class="list-group-item" *ngIf='user.email'>
-                Email: {{ user.email }}
-            </li>
-            <li class="list-group-item" *ngIf='user.joined'>
-                Join Date: {{ user.joined | date }}
-            </li>
+      <div *ngIf="users.length > 0; else noUser">
+        <h3>Users</h3>
+        <div class="card card-body mb-2" *ngFor='let user of users' [class.bg-light] = 'user.isActive'>
+          <h6 class="pt-2">{{ user.firstName | uppercase }} {{ user.lastName | uppercase }}
+              <small class="float-right">
+                  <button (click) = "editUser(user)" class="btn btn-outline-primary mr-2 my-0"><i class="fa fa-pencil"></i></button>
+                  <button *ngIf="!isEdit" (click) = "daleteUser(user)" class="btn btn-outline-danger mr-2"><i class="fa fa-remove"></i></button>
+                  <button class="btn btn-outline-info"
+                      (click) = "user.expand = !user.expand"
+                      *ngIf="user.email || user.joined">
+                      <i [ngClass]="!user.expand ? 'fa fa-plus-square-o pt-1' : 'fa fa-minus-square-o pt-1'"></i>
+                  </button>
+              </small>
+          </h6>
+          <div *ngIf='user.expand && (user.email || user.joined)'>
+              <li class="list-group-item" *ngIf='user.email'>
+                  Email: {{ user.email }}
+              </li>
+              <li class="list-group-item" *ngIf='user.joined'>
+                  Join Date: {{ user.joined | date }}
+              </li>
+          </div>
         </div>
       </div>
+      <ng-template #noUser>
+          No User Available
+      </ng-template>
     </div>
   </div>
 </div>

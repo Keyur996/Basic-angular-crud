@@ -21,6 +21,7 @@ export class UsersComponent implements OnInit {
 
   ngOnInit(): void {
     this.users = this.dataService.getUsers();
+    console.log(this.users.length);
   }
 
   onSubmit({value, valid}: {value:Users, valid:boolean}){
@@ -39,29 +40,19 @@ export class UsersComponent implements OnInit {
   }
 
   updateUser = (): void => {
-    this.users.forEach((cur: Users, index) => {
-      if (cur.email === this.user.email) {
-        this.users.splice(index, 1);
-        console.log(this.user);
-        this.isEdit = false;
-        this.showForm = false;
-        this.users.unshift(this.user);
-        this.user = {
-          firstName: '',
-          lastName: '',
-          email: '',
-        }
-      }
-    });
+    this.isEdit = false;
+    this.showForm = false;
+    this.dataService.updateUser(this.user);
+    // this.form.reset();
+    this.user = {
+      firstName: '',
+      lastName: '',
+      email: ''
+    }
   }
 
   daleteUser = (user: Users): void => {
-    this.user = user
-    this.users.forEach((cur: Users, index) => {
-      if (cur.email === this.user.email) {
-        this.users.splice(index, 1);
-      }
-    });
+    this.dataService.removeUser(user);
   }
 
 }
