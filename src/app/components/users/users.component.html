@@ -1,7 +1,7 @@
 <div class="container justify-content-center">
   <div class="row">
     <div class="col-md-6 col-sm-6">
-      <button class="btn btn-dark mb-3" (click)="showForm = !showForm" *ngIf="!isEdit">Add User</button>
+      <button class="btn btn-primary mb-3" (click)="showForm = !showForm" *ngIf="!isEdit">Add User</button>
       <button class="btn btn-warning mb-3" (click)="showForm = !showForm" *ngIf="isEdit">Update User</button>
       <form class="form card card-body mb-2" *ngIf="showForm"
         #userForm = "ngForm"
@@ -12,12 +12,12 @@
             <input
             type="text"
             name="firstName"
+            #userfirstName="ngModel"
             [ngClass]="{'is-invalid': userfirstName.errors && userfirstName.touched}"
             [(ngModel)]="user.firstName"
             class="form-control"
-            #userfirstName="ngModel"
-            required
             minlength="3"
+            required
             >
             <div [hidden]="!userfirstName.errors?.required"
             class="invalid-feedback"> Firstname Required </div>
@@ -46,7 +46,7 @@
             <input
             type="text"
             name="email"
-            [ngClass]="{'is-invalid': userEmail.errors && userEmail.touched}"
+            [ngClass]="{'is-invalid': userEmail.errors && userEmail.touched }"
             [disabled]="isEdit"
             [(ngModel)]="user.email"
             class="form-control"
@@ -59,8 +59,13 @@
             <div [hidden]="!userEmail.errors?.pattern"
             class="invalid-feedback"> Email is not Valid</div>
         </div>
-        <button *ngIf="!isEdit" class="btn btn-block btn-light mb-2"
-        [disabled]="!userForm.form.valid">Add User</button>
+        <input
+        type="submit"
+        *ngIf="!isEdit"
+        class="btn btn-block btn-light mb-2"
+        [disabled]="!userForm.form.valid"
+        value="Add User"
+        >
         <button *ngIf="isEdit" class="btn btn-block btn-secondary mb-2"
         [disabled]="!userForm.form.valid" (click)="updateUser()">Update User</button>
       </form>

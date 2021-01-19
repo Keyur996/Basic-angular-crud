@@ -8,7 +8,11 @@ import { Users } from '../../../models/Users';
   styleUrls: ['./users.component.css']
 })
 export class UsersComponent implements OnInit {
-  user: Users;
+  user: Users = {
+    firstName: '',
+    lastName: '',
+    email: ''
+  };
   users: Users[];
   showExtended: boolean = false;
   showForm: boolean = false;
@@ -21,7 +25,7 @@ export class UsersComponent implements OnInit {
 
   ngOnInit(): void {
     this.users = this.dataService.getUsers();
-    console.log(this.users.length);
+    // console.log(this.users.length);
   }
 
   onSubmit({value, valid}: {value:Users, valid:boolean}){
