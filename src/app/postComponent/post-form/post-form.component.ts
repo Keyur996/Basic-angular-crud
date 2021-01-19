@@ -32,11 +32,19 @@ export class PostFormComponent implements OnInit {
     }
   }
 
-  updatePost = () : void => {
-    this.postService.updatePost(this.currentPost).subscribe(post => {
+  updatePost = (): void => {
+
+     if (!this.currentPost.title || !this.currentPost.body) {
+      swal({
+        text: 'Title and body is required field',
+        title: 'Please Enter Data'
+      });
+    } else {
+       this.postService.updatePost(this.currentPost).subscribe(post => {
       // console.log(post);
       this.isEdit = false;
       this.updatedPost.emit(post);
     })
+    }
   }
 }

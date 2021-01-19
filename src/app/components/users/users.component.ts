@@ -8,15 +8,12 @@ import { Users } from '../../../models/Users';
   styleUrls: ['./users.component.css']
 })
 export class UsersComponent implements OnInit {
-  user: Users ={
-    firstName: '',
-    lastName: '',
-    email: ''
-  }
+  user: Users;
   users: Users[];
-  showExtended = false;
-  showForm = false;
-  enableAdd = false;
+  showExtended: boolean = false;
+  showForm: boolean = false;
+  enableAdd: boolean = false;
+  isEdit: boolean = false;
   @ViewChild('userForm') form:any;
 
   constructor(private dataService: DataService) {
@@ -34,4 +31,37 @@ export class UsersComponent implements OnInit {
       this.form.reset();
     }
   }
+
+  editUser = (user: Users): void => {
+    this.isEdit = true;
+    this.showForm = true;
+    this.user = user;
+  }
+
+  updateUser = (): void => {
+    this.users.forEach((cur: Users, index) => {
+      if (cur.email === this.user.email) {
+        this.users.splice(index, 1);
+        console.log(this.user);
+        this.isEdit = false;
+        this.showForm = false;
+        this.users.unshift(this.user);
+        this.user = {
+          firstName: '',
+          lastName: '',
+          email: '',
+        }
+      }
+    });
+  }
+
+  daleteUser = (user: Users): void => {
+    this.user = user
+    this.users.forEach((cur: Users, index) => {
+      if (cur.email === this.user.email) {
+        this.users.splice(index, 1);
+      }
+    });
+  }
+
 }

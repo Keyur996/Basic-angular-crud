@@ -1,7 +1,8 @@
 <div class="container justify-content-center">
   <div class="row">
     <div class="col-md-6 col-sm-6">
-      <button class="btn btn-dark mb-3" (click)="showForm = !showForm">Add User</button>
+      <button class="btn btn-dark mb-3" (click)="showForm = !showForm" *ngIf="!isEdit">Add User</button>
+      <button class="btn btn-warning mb-3" (click)="showForm = !showForm" *ngIf="isEdit">Update User</button>
       <form class="form card card-body mb-2" *ngIf="showForm"
         #userForm = "ngForm"
         (ngSubmit)='onSubmit(userForm)' >
@@ -46,6 +47,7 @@
             type="text"
             name="email"
             [ngClass]="{'is-invalid': userEmail.errors && userEmail.touched}"
+            [disabled]="isEdit"
             [(ngModel)]="user.email"
             class="form-control"
             #userEmail="ngModel"
@@ -57,18 +59,24 @@
             <div [hidden]="!userEmail.errors?.pattern"
             class="invalid-feedback"> Email is not Valid</div>
         </div>
-        <button class="btn btn-block btn-light mb-2"
+        <button *ngIf="!isEdit" class="btn btn-block btn-light mb-2"
         [disabled]="!userForm.form.valid">Add User</button>
+        <button *ngIf="isEdit" class="btn btn-block btn-secondary mb-2"
+        [disabled]="!userForm.form.valid" (click)="updateUser()">Update User</button>
       </form>
     </div>
     <div class="col-md-6 col-sm-8">
       <h3>Users</h3>
       <div class="card card-body mb-2" *ngFor='let user of users' [class.bg-light] = 'user.isActive'>
         <h6 class="pt-2">{{ user.firstName | uppercase }} {{ user.lastName | uppercase }}
-            <small>
-                <i [ngClass]="!user.expand ? 'fa fa-plus-square float-right pt-1' : 'fa fa-minus-square float-right pt-1'"
+            <small class="float-right">
+                <button (click) = "editUser(user)" class="btn btn-outline-primary mr-2 my-0"><i class="fa fa-pencil"></i></button>
+                <button (click) = "daleteUser(user)" class="btn btn-outline-danger mr-2"><i class="fa fa-remove"></i></button>
+                <button class="btn btn-outline-info"
                     (click) = "user.expand = !user.expand"
-                    *ngIf="user.email || user.joined"> </i>
+                    *ngIf="user.email || user.joined">
+                    <i [ngClass]="!user.expand ? 'fa fa-plus-square-o pt-1' : 'fa fa-minus-square-o pt-1'"></i>
+                </button>
             </small>
         </h6>
         <div *ngIf='user.expand && (user.email || user.joined)'>
