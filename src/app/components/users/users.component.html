@@ -1,82 +1,13 @@
 <div class="container justify-content-center">
   <div class="row">
-    <div class="col-md-6 col-sm-6">
-      <button class="btn btn-primary mb-3" (click)="showForm = !showForm" *ngIf="!isEdit">Add User</button>
-      <button class="btn btn-warning mb-3" (click)="showForm = !showForm" *ngIf="isEdit">Update User</button>
-      <form class="form card card-body mb-2" *ngIf="showForm"
-        #userForm = "ngForm"
-        (ngSubmit)='onSubmit(userForm)' >
-        <div class="form-group">
-            <!-- firstName -->
-            <label>Firstname</label>
-            <input
-            type="text"
-            name="firstName"
-            #userfirstName="ngModel"
-            [ngClass]="{'is-invalid': userfirstName.errors && userfirstName.touched}"
-            [(ngModel)]="user.firstName"
-            class="form-control"
-            minlength="3"
-            required
-            >
-            <div [hidden]="!userfirstName.errors?.required"
-            class="invalid-feedback"> Firstname Required </div>
-            <div [hidden]="!userfirstName.errors?.minlength"
-            class="invalid-feedback"> Must be 3 Character long </div>
-
-            <!-- Lastname -->
-            <label>Lastname</label>
-            <input
-            type="text"
-            name="lastName"
-            [ngClass]="{'is-invalid': userlastName.errors && userlastName.touched}"
-            [(ngModel)]="user.lastName"
-            class="form-control"
-            #userlastName="ngModel"
-            required
-            minlength="3"
-            >
-            <div [hidden]="!userlastName.errors?.required"
-            class="invalid-feedback"> Lastname Required </div>
-            <div [hidden]="!userlastName.errors?.minlength"
-            class="invalid-feedback"> Must be 3 Character long </div>
-
-            <!-- email -->
-            <label>Email</label>
-            <input
-            type="text"
-            name="email"
-            [ngClass]="{'is-invalid': userEmail.errors && userEmail.touched }"
-            [disabled]="isEdit"
-            [(ngModel)]="user.email"
-            class="form-control"
-            #userEmail="ngModel"
-            required
-            pattern="^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$"
-            >
-            <div [hidden]="!userEmail.errors?.required"
-            class="invalid-feedback"> Email Required </div>
-            <div [hidden]="!userEmail.errors?.pattern"
-            class="invalid-feedback"> Email is not Valid</div>
-        </div>
-        <input
-        type="submit"
-        *ngIf="!isEdit"
-        class="btn btn-block btn-light mb-2"
-        [disabled]="!userForm.form.valid"
-        value="Add User"
-        >
-        <button *ngIf="isEdit" class="btn btn-block btn-secondary mb-2"
-        [disabled]="!userForm.form.valid" (click)="updateUser()">Update User</button>
-      </form>
-    </div>
     <div class="col-md-6 col-sm-8">
+      <button class="btn btn-primary mb-3" (click)="popForm(form)" *ngIf="!isEdit">Add User</button>
       <div *ngIf="users.length > 0; else noUser">
         <h3>Users</h3>
         <div class="card card-body mb-2" *ngFor='let user of users' [class.bg-light] = 'user.isActive'>
           <h6 class="pt-2">{{ user.firstName | uppercase }} {{ user.lastName | uppercase }}
               <small class="float-right">
-                  <button (click) = "editUser(user)" class="btn btn-outline-primary mr-2 my-0"><i class="fa fa-pencil"></i></button>
+                  <button (click) = "editUser(user, form)" class="btn btn-outline-primary mr-2 my-0"><i class="fa fa-pencil"></i></button>
                   <button *ngIf="!isEdit" (click) = "daleteUser(user)" class="btn btn-outline-danger mr-2"><i class="fa fa-remove"></i></button>
                   <button class="btn btn-outline-info"
                       (click) = "user.expand = !user.expand"
@@ -95,9 +26,87 @@
           </div>
         </div>
       </div>
-      <ng-template #noUser>
-          No User Available
-      </ng-template>
     </div>
+    <ng-template #noUser>
+        No User Available
+    </ng-template>
+    <ng-template #form let-modal>
+      <div class="modal-header">
+        <h4 *ngIf="!isEdit" class="modal-title">Add User</h4>
+        <h4 *ngIf="isEdit" class="modal-title">Update User</h4>
+        <button type="button" class="btn btn-light" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true"><i class="fa fa-remove"></i></span>
+        </button>
+      </div>
+      <div class="modal-body card-body">
+      <!-- <button class="btn btn-warning mb-3" (click)="showForm = !showForm" *ngIf="isEdit">Update User</button> -->
+        <form class="form"
+          #userForm = "ngForm"
+          (ngSubmit)='onSubmit(userForm)' >
+          <div class="form-group">
+              <!-- firstName -->
+              <label>Firstname</label>
+              <input
+              type="text"
+              name="firstName"
+              #userfirstName="ngModel"
+              [ngClass]="{'is-invalid': userfirstName.errors && userfirstName.touched}"
+              [(ngModel)]="user.firstName"
+              class="form-control"
+              minlength="3"
+              required
+              >
+              <div [hidden]="!userfirstName.errors?.required"
+              class="invalid-feedback"> Firstname Required </div>
+              <div [hidden]="!userfirstName.errors?.minlength"
+              class="invalid-feedback"> Must be 3 Character long </div>
+
+              <!-- Lastname -->
+              <label>Lastname</label>
+              <input
+              type="text"
+              name="lastName"
+              [ngClass]="{'is-invalid': userlastName.errors && userlastName.touched}"
+              [(ngModel)]="user.lastName"
+              class="form-control"
+              #userlastName="ngModel"
+              required
+              minlength="3"
+              >
+              <div [hidden]="!userlastName.errors?.required"
+              class="invalid-feedback"> Lastname Required </div>
+              <div [hidden]="!userlastName.errors?.minlength"
+              class="invalid-feedback"> Must be 3 Character long </div>
+
+              <!-- email -->
+              <label>Email</label>
+              <input
+              type="text"
+              name="email"
+              [ngClass]="{'is-invalid': userEmail.errors && userEmail.touched }"
+              [disabled]="isEdit"
+              [(ngModel)]="user.email"
+              class="form-control"
+              #userEmail="ngModel"
+              required
+              pattern="^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$"
+              >
+              <div [hidden]="!userEmail.errors?.required"
+              class="invalid-feedback"> Email Required </div>
+              <div [hidden]="!userEmail.errors?.pattern"
+              class="invalid-feedback"> Email is not Valid</div>
+          </div>
+          <input
+          type="submit"
+          *ngIf="!isEdit"
+          class="btn btn-block btn-light mb-2"
+          [disabled]="!userForm.form.valid"
+          value="Add User"
+          >
+          <button *ngIf="isEdit" class="btn btn-block btn-secondary mb-2"
+          [disabled]="!userForm.form.valid" (click)="updateUser()">Update User</button>
+        </form>
+      </div>
+    </ng-template>
   </div>
 </div>

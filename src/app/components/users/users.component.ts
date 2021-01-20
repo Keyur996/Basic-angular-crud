@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DataService } from 'src/app/services/data.service';
 import { Users } from '../../../models/Users';
 
@@ -15,12 +16,13 @@ export class UsersComponent implements OnInit {
   };
   users: Users[];
   showExtended: boolean = false;
-  showForm: boolean = false;
   enableAdd: boolean = false;
   isEdit: boolean = false;
+  ref: any;
   @ViewChild('userForm') form:any;
 
-  constructor(private dataService: DataService) {
+  constructor(private dataService: DataService,
+    private modalService: NgbModal) {
   }
 
   ngOnInit(): void {
@@ -33,30 +35,40 @@ export class UsersComponent implements OnInit {
       console.log('form is not valid');
     } else {
       this.dataService.addUser(value);
-      this.form.reset();
+      this.clear();
+      this.ref.close();
     }
   }
 
-  editUser = (user: Users): void => {
+  editUser = (user: Users, form: any): void => {
     this.isEdit = true;
-    this.showForm = true;
+    this.popForm(form);
     this.user = user;
   }
 
   updateUser = (): void => {
     this.isEdit = false;
-    this.showForm = false;
     this.dataService.updateUser(this.user);
     // this.form.reset();
-    this.user = {
-      firstName: '',
-      lastName: '',
-      email: ''
-    }
+    this.clear();
+    this.ref.close();
   }
 
   daleteUser = (user: Users): void => {
     this.dataService.removeUser(user);
   }
 
+  popForm = (form: any):void => {
+    this.ref=this.modalService.open(form, {
+        centered: true
+      });
+  }
+
+  clear = ():void => {
+    this.user = {
+      firstName: '',
+      lastName: '',
+      email: ''
+    }
+  }
 }
