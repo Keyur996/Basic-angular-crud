@@ -1,18 +1,19 @@
 <div class="container justify-content-center">
   <div class="row">
     <div class="col-md-6 col-sm-8">
-      <button class="btn btn-primary mb-3" (click)="popForm(form)" *ngIf="!isEdit">Add User</button>
+      <button class="btn btn-block btn-primary mb-3" (click)="popForm(form)">Add User</button>
       <div *ngIf="users.length > 0; else noUser">
         <h3>Users</h3>
         <div class="card card-body mb-2" *ngFor='let user of users' [class.bg-light] = 'user.isActive'>
-          <h6 class="pt-2">{{ user.firstName | uppercase }} {{ user.lastName | uppercase }}
+          <h6>{{ user.firstName | uppercase }} {{ user.lastName | uppercase }}
               <small class="float-right">
-                  <button (click) = "editUser(user, form)" class="btn btn-outline-primary mr-2 my-0"><i class="fa fa-pencil"></i></button>
-                  <button *ngIf="!isEdit" (click) = "daleteUser(user)" class="btn btn-outline-danger mr-2"><i class="fa fa-remove"></i></button>
+                  <button (click) = "editUser(user, form)" class="btn btn-outline-primary mr-2 my-0">
+                    <i class="fa fa-pencil"></i></button>
+                  <button (click) = "daleteUser(user)" class="btn btn-outline-danger mr-2"><i class="fa fa-remove"></i></button>
                   <button class="btn btn-outline-info"
                       (click) = "user.expand = !user.expand"
                       *ngIf="user.email || user.joined">
-                      <i [ngClass]="!user.expand ? 'fa fa-plus-square-o pt-1' : 'fa fa-minus-square-o pt-1'"></i>
+                      <i [ngClass]="!user.expand ? 'fa fa-plus pt-1' : 'fa fa-minus pt-1'"></i>
                   </button>
               </small>
           </h6>
@@ -31,7 +32,7 @@
         No User Available
     </ng-template>
     <ng-template #form let-modal>
-      <div class="modal-header">
+      <div class="modal-header text-white" style="background-color: #6200ea;">
         <h4 *ngIf="!isEdit" class="modal-title">Add User</h4>
         <h4 *ngIf="isEdit" class="modal-title">Update User</h4>
         <button type="button" class="btn btn-light" aria-label="Close" (click)="modal.dismiss('Cross click')">
@@ -103,7 +104,7 @@
           [disabled]="!userForm.form.valid"
           value="Add User"
           >
-          <button *ngIf="isEdit" class="btn btn-block btn-secondary mb-2"
+          <button *ngIf="isEdit" class="btn btn-block btn-warning mb-2"
           [disabled]="!userForm.form.valid" (click)="updateUser()">Update User</button>
         </form>
       </div>

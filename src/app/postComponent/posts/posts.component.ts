@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PostsService } from 'src/app/services/posts.service';
 import { Posts } from 'src/models/Posts';
 import swal from 'sweetalert';
@@ -16,8 +17,10 @@ export class PostsComponent implements OnInit {
     body: ''
   };
   isEdit: boolean = false;
+  ref: any
 
-  constructor(private postService: PostsService) { }
+  constructor(private postService: PostsService,
+          private modalService: NgbModal) { }
 
   ngOnInit(): void {
     this.postService.getPost().subscribe(posts => {
@@ -27,12 +30,16 @@ export class PostsComponent implements OnInit {
 
   onNewPost = (post: Posts): void  => {
     this.posts.unshift(post);
-    swal('Created...', 'Post Added Successfully', 'success');
+    swal('Created...', 'Post Added Successfully', 'success').then(() => {
+      this.clear();
+      this.ref.close();
+    });
   }
 
-  editPost = (post: Posts): void => {
+  editPost = (post: Posts, form: any): void => {
     this.currentPost = post;
     this.isEdit = true;
+    this.popform(form);
   };
 
   onUpdatePost = (post: Posts): void => {
@@ -41,15 +48,27 @@ export class PostsComponent implements OnInit {
         this.posts.splice(index, 1);
         this.isEdit = false;
         this.posts.unshift(post);
-        this.currentPost = {
-          id: 0,
-          title: '',
-          body: ''
-        }
-        swal('Upadted....', 'Post Updated Successfully', 'success');
+        swal('Upadted....', 'Post Updated Successfully', 'success').then(() => {
+          this.clear();
+          this.ref.close();
+        });
       }
     });
   };
+
+  popform = (form: any) => {
+    this.ref = this.modalService.open(form, {
+      centered: true,
+    });
+  }
+
+  clear = () => {
+    this.currentPost = {
+      id: 0,
+      title: '',
+      body: ''
+    }
+  }
 
   removePost = (post: Posts) => {
     swal({
