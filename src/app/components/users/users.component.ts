@@ -43,7 +43,7 @@ export class UsersComponent implements OnInit {
     if(!valid){
       console.log('form is not valid');
     } else {
-      this.dataService.addUser(value);
+      this.dataService.addUser(Object.assign({}, value));
       this.showForm = false;
       this.clear();
       this.ref.close();
@@ -53,7 +53,7 @@ export class UsersComponent implements OnInit {
   editUser = (user:Users, form: any): void => {
     this.isEdit = true;
     this.showForm = false;
-    this.cu = user;
+    this.cu = Object.assign({}, user);
     this.popForm(form);
   }
 

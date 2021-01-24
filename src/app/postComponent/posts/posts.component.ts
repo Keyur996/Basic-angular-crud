@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbConfig, NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { PostsService } from 'src/app/services/posts.service';
 import { Posts } from 'src/models/Posts';
 import swal from 'sweetalert';
@@ -20,7 +20,11 @@ export class PostsComponent implements OnInit {
   ref: any
 
   constructor(private postService: PostsService,
-          private modalService: NgbModal) { }
+          config: NgbModalConfig,
+          private modalService: NgbModal) {
+    config.backdrop = 'static';
+    config.keyboard = false;
+}
 
   ngOnInit(): void {
     this.postService.getPost().subscribe(posts => {
@@ -37,7 +41,7 @@ export class PostsComponent implements OnInit {
   }
 
   editPost = (post: Posts, form: any): void => {
-    this.currentPost = post;
+    this.currentPost = Object.assign({}, post);
     this.isEdit = true;
     this.popform(form);
   };
