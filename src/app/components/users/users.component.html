@@ -50,7 +50,6 @@
                 type="text"
                 name="email"
                 [ngClass]="{'is-invalid': userEmail.errors && userEmail.touched }"
-                [disabled]="isEdit"
                 [(ngModel)]="user.email"
                 class="form-control"
                 #userEmail="ngModel"

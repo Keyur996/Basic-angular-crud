@@ -96,5 +96,4 @@ export class PostsComponent implements OnInit {
       }
     });
   }
-
 }
