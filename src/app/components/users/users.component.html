@@ -1,65 +1,133 @@
 <div class="container justify-content-center">
   <div class="row">
     <div class="col-md-6 col-sm-8">
-      <button class="btn btn-block btn-primary mb-3" (click)="popForm(form)">Add User</button>
-      <div *ngIf="users.length > 0; else noUser">
-        <h3>Users</h3>
-        <div class="card card-body mb-2" *ngFor='let user of users' [class.bg-light] = 'user.isActive'>
-          <h6>{{ user.firstName | uppercase }} {{ user.lastName | uppercase }}
-              <small class="float-right">
-                  <button (click) = "editUser(user, form)" class="btn btn-outline-primary mr-2 my-0">
-                    <i class="fa fa-pencil"></i></button>
-                  <button (click) = "daleteUser(user)" class="btn btn-outline-danger mr-2"><i class="fa fa-remove"></i></button>
-                  <button class="btn btn-outline-info"
-                      (click) = "user.expand = !user.expand"
-                      *ngIf="user.email || user.joined">
-                      <i [ngClass]="!user.expand ? 'fa fa-plus pt-1' : 'fa fa-minus pt-1'"></i>
-                  </button>
-              </small>
-          </h6>
-          <div *ngIf='user.expand && (user.email || user.joined)'>
-              <li class="list-group-item" *ngIf='user.email'>
-                  Email: {{ user.email }}
-              </li>
-              <li class="list-group-item" *ngIf='user.joined'>
-                  Join Date: {{ user.joined | date }}
-              </li>
-          </div>
+      <button class="btn btn-block btn-primary mb-3" (click)="showForm = !showForm">Add User</button>
+      <div class="card" *ngIf='showForm'>
+        <div class="card-header"><h4>Add User</h4></div>
+        <div class="card-body">
+        <!-- <button class="btn btn-warning mb-3" (click)="showForm = !showForm" *ngIf="isEdit">Update User</button> -->
+          <form class="form"
+            #userForm = "ngForm"
+            (ngSubmit)='onSubmit(userForm)' >
+            <div class="form-group">
+                <!-- firstName -->
+                <label>Firstname</label>
+                <input
+                type="text"
+                name="firstName"
+                #userfirstName="ngModel"
+                [ngClass]="{'is-invalid': userfirstName.errors && userfirstName.touched}"
+                [(ngModel)]="user.firstName"
+                class="form-control"
+                minlength="3"
+                required
+                >
+                <div [hidden]="!userfirstName.errors?.required"
+                class="invalid-feedback"> Firstname Required </div>
+                <div [hidden]="!userfirstName.errors?.minlength"
+                class="invalid-feedback"> Must be 3 Character long </div>
+
+                <!-- Lastname -->
+                <label>Lastname</label>
+                <input
+                type="text"
+                name="lastName"
+                [ngClass]="{'is-invalid': userlastName.errors && userlastName.touched}"
+                [(ngModel)]="user.lastName"
+                class="form-control"
+                #userlastName="ngModel"
+                required
+                minlength="3"
+                >
+                <div [hidden]="!userlastName.errors?.required"
+                class="invalid-feedback"> Lastname Required </div>
+                <div [hidden]="!userlastName.errors?.minlength"
+                class="invalid-feedback"> Must be 3 Character long </div>
+
+                <!-- email -->
+                <label>Email</label>
+                <input
+                type="text"
+                name="email"
+                [ngClass]="{'is-invalid': userEmail.errors && userEmail.touched }"
+                [disabled]="isEdit"
+                [(ngModel)]="user.email"
+                class="form-control"
+                #userEmail="ngModel"
+                required
+                pattern="^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$"
+                >
+                <div [hidden]="!userEmail.errors?.required"
+                class="invalid-feedback"> Email Required </div>
+                <div [hidden]="!userEmail.errors?.pattern"
+                class="invalid-feedback"> Email is not Valid</div>
+            </div>
+            <input
+            type="submit"
+            class="btn btn-block btn-light mb-2"
+            [disabled]="!userForm.form.valid"
+            value="Add User"
+            >
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-sm-8">
+    <h3>Users</h3>
+      <div *ngIf="users.length > 0; else noUser"></div>
+      <div class="card card-body mb-2" *ngFor='let user of users' [class.bg-light] = 'user.isActive'>
+        <h6>{{ user.firstName | uppercase }} {{ user.lastName | uppercase }}
+            <small class="float-right">
+                <button (click) = "editUser(user,form)" class="btn btn-outline-primary mr-2 my-0">
+                  <i class="fa fa-pencil"></i></button>
+                <button (click) = "daleteUser(user)" class="btn btn-outline-danger mr-2"><i class="fa fa-remove"></i></button>
+                <button class="btn btn-outline-info"
+                    (click) = "user.expand = !user.expand"
+                    *ngIf="user.email || user.joined">
+                    <i [ngClass]="!user.expand ? 'fa fa-plus pt-1' : 'fa fa-minus pt-1'"></i>
+                </button>
+            </small>
+        </h6>
+        <div *ngIf='user.expand && (user.email || user.joined)'>
+            <li class="list-group-item" *ngIf='user.email'>
+                Email: {{ user.email }}
+            </li>
+            <li class="list-group-item" *ngIf='user.joined'>
+                Join Date: {{ user.joined | date }}
+            </li>
         </div>
       </div>
     </div>
     <ng-template #noUser>
         No User Available
     </ng-template>
-    <ng-template #form let-modal>
+    <ng-template #form let-c='close'>
       <div class="modal-header text-white" style="background-color: #6200ea;">
-        <h4 *ngIf="!isEdit" class="modal-title">Add User</h4>
         <h4 *ngIf="isEdit" class="modal-title">Update User</h4>
-        <button type="button" class="btn btn-light" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <button type="button" class="btn btn-light" aria-label="Close" (click)="c('Cross click')">
           <span aria-hidden="true"><i class="fa fa-remove"></i></span>
         </button>
       </div>
       <div class="modal-body card-body">
       <!-- <button class="btn btn-warning mb-3" (click)="showForm = !showForm" *ngIf="isEdit">Update User</button> -->
         <form class="form"
-          #userForm = "ngForm"
-          (ngSubmit)='onSubmit(userForm)' >
+          #cuForm = "ngForm" >
           <div class="form-group">
               <!-- firstName -->
               <label>Firstname</label>
               <input
               type="text"
               name="firstName"
-              #userfirstName="ngModel"
-              [ngClass]="{'is-invalid': userfirstName.errors && userfirstName.touched}"
-              [(ngModel)]="user.firstName"
+              #cufirstName="ngModel"
+              [ngClass]="{'is-invalid': cufirstName.errors && cufirstName.touched}"
+              [(ngModel)]="cu.firstName"
               class="form-control"
               minlength="3"
               required
               >
-              <div [hidden]="!userfirstName.errors?.required"
+              <div [hidden]="!cufirstName.errors?.required"
               class="invalid-feedback"> Firstname Required </div>
-              <div [hidden]="!userfirstName.errors?.minlength"
+              <div [hidden]="!cufirstName.errors?.minlength"
               class="invalid-feedback"> Must be 3 Character long </div>
 
               <!-- Lastname -->
@@ -67,16 +135,16 @@
               <input
               type="text"
               name="lastName"
-              [ngClass]="{'is-invalid': userlastName.errors && userlastName.touched}"
-              [(ngModel)]="user.lastName"
+              [ngClass]="{'is-invalid': culastName.errors && culastName.touched}"
+              [(ngModel)]="cu.lastName"
               class="form-control"
-              #userlastName="ngModel"
+              #culastName="ngModel"
               required
               minlength="3"
               >
-              <div [hidden]="!userlastName.errors?.required"
+              <div [hidden]="!culastName.errors?.required"
               class="invalid-feedback"> Lastname Required </div>
-              <div [hidden]="!userlastName.errors?.minlength"
+              <div [hidden]="!culastName.errors?.minlength"
               class="invalid-feedback"> Must be 3 Character long </div>
 
               <!-- email -->
@@ -84,28 +152,21 @@
               <input
               type="text"
               name="email"
-              [ngClass]="{'is-invalid': userEmail.errors && userEmail.touched }"
+              [ngClass]="{'is-invalid': cuEmail.errors && cuEmail.touched }"
               [disabled]="isEdit"
-              [(ngModel)]="user.email"
+              [(ngModel)]="cu.email"
               class="form-control"
-              #userEmail="ngModel"
+              #cuEmail="ngModel"
               required
               pattern="^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$"
               >
-              <div [hidden]="!userEmail.errors?.required"
+              <div [hidden]="!cuEmail.errors?.required"
               class="invalid-feedback"> Email Required </div>
-              <div [hidden]="!userEmail.errors?.pattern"
+              <div [hidden]="!cuEmail.errors?.pattern"
               class="invalid-feedback"> Email is not Valid</div>
           </div>
-          <input
-          type="submit"
-          *ngIf="!isEdit"
-          class="btn btn-block btn-light mb-2"
-          [disabled]="!userForm.form.valid"
-          value="Add User"
-          >
           <button *ngIf="isEdit" class="btn btn-block btn-warning mb-2"
-          [disabled]="!userForm.form.valid" (click)="updateUser()">Update User</button>
+          [disabled]="!cuForm.form.valid" (click)="updateUser()">Update User</button>
         </form>
       </div>
     </ng-template>

@@ -12,7 +12,6 @@ import { PostsService } from './services/posts.service';
 import { PostFormComponent } from './postComponent/post-form/post-form.component';
 import { AppRouterModule } from './app-router.module';
 import { HomeComponent } from './components/home/home.component';
-import { PostDetailComponent } from './postComponent/post-detail/post-detail.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -23,7 +22,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     PostsComponent,
     PostFormComponent,
     HomeComponent,
-    PostDetailComponent,
   ],
   imports: [
     BrowserModule,
