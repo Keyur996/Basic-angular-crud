@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 import { Users } from 'src/models/Users';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
+  userChanged: Subject<Users[]> = new Subject<Users[]>();
   users: Users[];
 
   constructor() {
@@ -29,7 +31,7 @@ export class DataService {
   }
 
   getUsers = () : Users[] => {
-    return this.users;
+    return this.users.slice();
   };
 
   addUser = (user: Users) => {
@@ -37,6 +39,7 @@ export class DataService {
     user.joined = new Date();
     user.expand = false;
     this.users.unshift(user);
+    this.userChanged.next(this.users.slice());
   }
 
   updateUser = (user: Users) => {
@@ -47,6 +50,7 @@ export class DataService {
         this.users.unshift(user);
       }
     });
+    this.userChanged.next(this.users.slice());
   }
 
   removeUser = (user: Users) => {
@@ -56,5 +60,6 @@ export class DataService {
         console.log(this.users.length);
       }
     });
+    this.userChanged.next(this.users.slice());
   }
 }

@@ -1,75 +1,8 @@
 <div class="container justify-content-center">
   <div class="row">
     <div class="col-md-6 col-sm-8">
-      <button class="btn btn-block btn-primary mb-3" (click)="showForm = !showForm">Add User</button>
-      <div class="card" *ngIf='showForm'>
-        <div class="card-header"><h4>Add User</h4></div>
-        <div class="card-body">
-        <!-- <button class="btn btn-warning mb-3" (click)="showForm = !showForm" *ngIf="isEdit">Update User</button> -->
-          <form class="form"
-            #userForm = "ngForm"
-            (ngSubmit)='onSubmit(userForm)' >
-            <div class="form-group">
-                <!-- firstName -->
-                <label>Firstname</label>
-                <input
-                type="text"
-                name="firstName"
-                #userfirstName="ngModel"
-                [ngClass]="{'is-invalid': userfirstName.errors && userfirstName.touched}"
-                [(ngModel)]="user.firstName"
-                class="form-control"
-                minlength="3"
-                required
-                >
-                <div [hidden]="!userfirstName.errors?.required"
-                class="invalid-feedback"> Firstname Required </div>
-                <div [hidden]="!userfirstName.errors?.minlength"
-                class="invalid-feedback"> Must be 3 Character long </div>
-
-                <!-- Lastname -->
-                <label>Lastname</label>
-                <input
-                type="text"
-                name="lastName"
-                [ngClass]="{'is-invalid': userlastName.errors && userlastName.touched}"
-                [(ngModel)]="user.lastName"
-                class="form-control"
-                #userlastName="ngModel"
-                required
-                minlength="3"
-                >
-                <div [hidden]="!userlastName.errors?.required"
-                class="invalid-feedback"> Lastname Required </div>
-                <div [hidden]="!userlastName.errors?.minlength"
-                class="invalid-feedback"> Must be 3 Character long </div>
-
-                <!-- email -->
-                <label>Email</label>
-                <input
-                type="text"
-                name="email"
-                [ngClass]="{'is-invalid': userEmail.errors && userEmail.touched }"
-                [(ngModel)]="user.email"
-                class="form-control"
-                #userEmail="ngModel"
-                required
-                pattern="^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$"
-                >
-                <div [hidden]="!userEmail.errors?.required"
-                class="invalid-feedback"> Email Required </div>
-                <div [hidden]="!userEmail.errors?.pattern"
-                class="invalid-feedback"> Email is not Valid</div>
-            </div>
-            <input
-            type="submit"
-            class="btn btn-block btn-light mb-2"
-            [disabled]="!userForm.form.valid"
-            value="Add User"
-            >
-          </form>
-        </div>
-      </div>
+      <button class="btn btn-block btn-primary mb-3" (click)="this.showForm = !this.showForm;">Add User</button>
+      <app-add-user [displayForm] = 'showForm'></app-add-user>
     </div>
     <div class="col-md-6 col-sm-8">
     <h3>Users</h3>
@@ -99,75 +32,6 @@
     </div>
     <ng-template #noUser>
         No User Available
-    </ng-template>
-    <ng-template #form let-c='close'>
-      <div class="modal-header text-white" style="background-color: #6200ea;">
-        <h4 *ngIf="isEdit" class="modal-title">Update User</h4>
-        <button type="button" class="btn btn-light" aria-label="Close" (click)="c('Cross click')">
-          <span aria-hidden="true"><i class="fa fa-remove"></i></span>
-        </button>
-      </div>
-      <div class="modal-body card-body">
-      <!-- <button class="btn btn-warning mb-3" (click)="showForm = !showForm" *ngIf="isEdit">Update User</button> -->
-        <form class="form"
-          #cuForm = "ngForm" >
-          <div class="form-group">
-              <!-- firstName -->
-              <label>Firstname</label>
-              <input
-              type="text"
-              name="firstName"
-              #cufirstName="ngModel"
-              [ngClass]="{'is-invalid': cufirstName.errors && cufirstName.touched}"
-              [(ngModel)]="cu.firstName"
-              class="form-control"
-              minlength="3"
-              required
-              >
-              <div [hidden]="!cufirstName.errors?.required"
-              class="invalid-feedback"> Firstname Required </div>
-              <div [hidden]="!cufirstName.errors?.minlength"
-              class="invalid-feedback"> Must be 3 Character long </div>
-
-              <!-- Lastname -->
-              <label>Lastname</label>
-              <input
-              type="text"
-              name="lastName"
-              [ngClass]="{'is-invalid': culastName.errors && culastName.touched}"
-              [(ngModel)]="cu.lastName"
-              class="form-control"
-              #culastName="ngModel"
-              required
-              minlength="3"
-              >
-              <div [hidden]="!culastName.errors?.required"
-              class="invalid-feedback"> Lastname Required </div>
-              <div [hidden]="!culastName.errors?.minlength"
-              class="invalid-feedback"> Must be 3 Character long </div>
-
-              <!-- email -->
-              <label>Email</label>
-              <input
-              type="text"
-              name="email"
-              [ngClass]="{'is-invalid': cuEmail.errors && cuEmail.touched }"
-              [disabled]="isEdit"
-              [(ngModel)]="cu.email"
-              class="form-control"
-              #cuEmail="ngModel"
-              required
-              pattern="^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$"
-              >
-              <div [hidden]="!cuEmail.errors?.required"
-              class="invalid-feedback"> Email Required </div>
-              <div [hidden]="!cuEmail.errors?.pattern"
-              class="invalid-feedback"> Email is not Valid</div>
-          </div>
-          <button *ngIf="isEdit" class="btn btn-block btn-warning mb-2"
-          [disabled]="!cuForm.form.valid" (click)="updateUser()">Update User</button>
-        </form>
-      </div>
     </ng-template>
   </div>
 </div>

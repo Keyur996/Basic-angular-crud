@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit} from '@angular/core';
+import { NgbModal, NgbModalConfig, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { DataService } from 'src/app/services/data.service';
 import { Users } from '../../../models/Users';
-
+import { Subscription } from 'rxjs';
+import { EditUserComponent } from './edit-user/edit-user.component';
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
@@ -14,18 +15,12 @@ export class UsersComponent implements OnInit {
     lastName: '',
     email: ''
   };
-  cu: Users = {
-    firstName: '',
-    lastName: '',
-    email: '',
-  };
   users: Users[];
   showExtended: boolean = false;
   enableAdd: boolean = false;
-  isEdit: boolean = false;
-  ref: any;
+  ref: NgbModalRef;
   showForm: boolean = false;
-  @ViewChild('userForm') form:any;
+  private _sub: Subscription
 
   constructor(config: NgbModalConfig,
     private dataService: DataService,
@@ -36,50 +31,26 @@ export class UsersComponent implements OnInit {
 
   ngOnInit(): void {
     this.users = this.dataService.getUsers();
+    this._sub = this.dataService.userChanged.subscribe((users) => {
+      this.users = users;
+    });
     // console.log(this.users.length);
   }
 
-  onSubmit({value, valid}: {value:Users, valid:boolean}){
-    if(!valid){
-      console.log('form is not valid');
-    } else {
-      this.dataService.addUser(Object.assign({}, value));
-      this.showForm = false;
-      this.clear();
-      this.ref.close();
-    }
-  }
-
-  editUser = (user:Users, form: any): void => {
-    this.isEdit = true;
-    this.showForm = false;
-    this.cu = Object.assign({}, user);
-    this.popForm(form);
-  }
-
-  updateUser = (): void => {
-    this.isEdit = false;
-    this.dataService.updateUser(this.cu);
-    // this.form.reset();
-    this.clear();
-    this.ref.close();
+  editUser = (user:Users): void => {
+    this.ref=this.modalService.open(EditUserComponent, {
+      centered: true,
+    });
+    // console.log(this.ref);
+    this.ref.componentInstance.cu = Object.assign({}, user);
+    this.ref.componentInstance.ref = this.ref;
   }
 
   daleteUser = (user: Users): void => {
     this.dataService.removeUser(user);
   }
 
-  popForm = (form: any):void => {
-    this.ref=this.modalService.open(form, {
-        centered: true
-      });
-  }
-
-  clear = ():void => {
-    this.user = {
-      firstName: '',
-      lastName: '',
-      email: ''
-    }
+  ngOnDestroy(): void {
+    this._sub.unsubscribe();
   }
 }

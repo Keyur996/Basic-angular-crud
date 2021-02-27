@@ -13,6 +13,8 @@ import { PostFormComponent } from './postComponent/post-form/post-form.component
 import { AppRouterModule } from './app-router.module';
 import { HomeComponent } from './components/home/home.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AddUserComponent } from './components/users/add-user/add-user.component';
+import { EditUserComponent } from './components/users/edit-user/edit-user.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     PostsComponent,
     PostFormComponent,
     HomeComponent,
+    AddUserComponent,
+    EditUserComponent,
   ],
   imports: [
     BrowserModule,
