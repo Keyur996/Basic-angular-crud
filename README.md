@@ -1,27 +1,40 @@
-# NgApp
+## General info
+CRUD using Angular. Aim for this project is to learn Angular Concept.
+	
+## Technologies
+Project is created with:
+* Angular
+* Bootstrap
+* jsonpalceholder api  
+	
+## Setup
+To run this project, install it locally using npm:
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.6.
+```
+$ git clone https://github.com/Keyur996/Basic-angular-crud.git
+$ cd Basic-angular-crud
+$ npm install
+$ Make comment "const swal" in node_modules/sweetalert/typings/sweetalert.d.ts
+$ npm start
+```
 
-## Development server
+# Images - NgAPP
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Home 
+![Screenshot (32)](https://user-images.githubusercontent.com/61685652/116522911-4ef30200-a8f3-11eb-98ca-b974de97ccc3.png)
 
-## Code scaffolding
+## Users
+![Screenshot (33)](https://user-images.githubusercontent.com/61685652/116522946-561a1000-a8f3-11eb-9066-450b1729a09f.png)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## modal for Update data in Users
+![Screenshot (35)](https://user-images.githubusercontent.com/61685652/116523067-73e77500-a8f3-11eb-8462-fdcdca0b79bb.png)
 
-## Build
+## Posts 
+Posts fetched from jsonplaceholder api 
+![Screenshot (34)](https://user-images.githubusercontent.com/61685652/116522968-5dd9b480-a8f3-11eb-896b-53fb050ba038.png)
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+## Modal for Posts Update
+![Screenshot (36)](https://user-images.githubusercontent.com/61685652/116523433-d9d3fc80-a8f3-11eb-82f3-8a83bfa88d84.png)
 
-## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
