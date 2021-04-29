@@ -1,4 +1,4 @@
-  <!-- <div class="col-md-5 col-sm-6">
+<!-- <div class="col-md-5 col-sm-6">
     <app-post-form
     [currentPost]="currentPost"
     [isEdit]="isEdit"
@@ -6,37 +6,55 @@
     (updatedPost)="onUpdatePost($event)"
     ></app-post-form>
   </div> -->
-<button class="btn btn-primary btn-lg" (click)="popform(form)"><small><i class="fa fa-plus"></i> Add Post</small></button>
+<button class="btn btn-primary btn-lg" (click)="popform(form)">
+  <small><i class="fa fa-plus"></i> Add Post</small>
+</button>
 <div class="row card-group">
-  <div *ngFor="let post of posts" class="col-lg-4 col-md-6 col-sm-10 align-items-stretch" style="min-width: 200px;">
-      <div class="card my-2">
-        <div class="card-header">
-          <h4>{{ post.title }}</h4>
-        </div>
-        <div class="card-body">
-          <p>{{ post.body }}</p>
-        </div>
-        <div class="card-footer">
-          <button (click)="removePost(post)" class="btn btn-danger m-2"><i class="fa fa-remove"></i></button>
-          <button (click)="editPost(post, form)"  class="btn btn-secondary"><i class="fa fa-pencil"></i></button>
-        </div>
+  <div
+    *ngFor="let post of posts"
+    class="col-lg-4 col-md-6 col-sm-10 align-items-stretch"
+    style="min-width: 200px"
+  >
+    <div class="card my-2">
+      <div class="card-header">
+        <h4>{{ post.title }}</h4>
       </div>
+      <div class="card-body">
+        <p>{{ post.body }}</p>
+      </div>
+      <div class="card-footer">
+        <button (click)="removePost(post)" class="btn btn-danger m-2">
+          <i class="fa fa-remove"></i>
+        </button>
+        <button
+          *ngIf="post.id < 100"
+          (click)="editPost(post, form)"
+          class="btn btn-secondary"
+        >
+          <i class="fa fa-pencil"></i>
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 <ng-template #form let-modal>
   <div class="modal-header">
-    <h2 *ngIf='!isEdit' class="modal-title">Add Post</h2>
-    <h2 *ngIf='isEdit' class="modal-title">Update Post</h2>
-    <button type="button" class="btn btn-light" aria-label="Close" (click)="modal.dismiss('Cross click')" >
+    <h2 *ngIf="!isEdit" class="modal-title">Add Post</h2>
+    <h2 *ngIf="isEdit" class="modal-title">Update Post</h2>
+    <button
+      type="button"
+      class="btn btn-light"
+      aria-label="Close"
+      (click)="clear()"
+    >
       <small aria-hidden="true"><i class="fa fa-remove"></i></small>
     </button>
   </div>
-    <app-post-form
+  <app-post-form
     [currentPost]="currentPost"
     [isEdit]="isEdit"
     (updatedPost)="onUpdatePost($event)"
     (newPost)="onNewPost($event)"
-    >
-    </app-post-form>
+  >
+  </app-post-form>
 </ng-template>
-

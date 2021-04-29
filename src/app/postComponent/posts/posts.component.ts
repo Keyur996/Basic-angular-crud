@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbConfig, NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbConfig,
+  NgbModal,
+  NgbModalConfig,
+} from '@ng-bootstrap/ng-bootstrap';
 import { PostsService } from 'src/app/services/posts.service';
 import { Posts } from 'src/models/Posts';
 import swal from 'sweetalert';
@@ -7,38 +11,41 @@ import swal from 'sweetalert';
 @Component({
   selector: 'app-posts',
   templateUrl: './posts.component.html',
-  styleUrls: ['./posts.component.css']
+  styleUrls: ['./posts.component.css'],
 })
 export class PostsComponent implements OnInit {
   posts: Posts[];
   currentPost: Posts = {
     id: 0,
     title: '',
-    body: ''
+    body: '',
   };
   isEdit: boolean = false;
-  ref: any
+  ref: any;
 
-  constructor(private postService: PostsService,
-          config: NgbModalConfig,
-          private modalService: NgbModal) {
+  constructor(
+    private postService: PostsService,
+    config: NgbModalConfig,
+    private modalService: NgbModal
+  ) {
     config.backdrop = 'static';
     config.keyboard = false;
-}
+  }
 
   ngOnInit(): void {
-    this.postService.getPost().subscribe(posts => {
+    this.postService.getPost().subscribe((posts) => {
       this.posts = posts;
+      console.log(posts);
     });
   }
 
-  onNewPost = (post: Posts): void  => {
+  onNewPost = (post: Posts): void => {
     this.posts.unshift(post);
     swal('Created...', 'Post Added Successfully', 'success').then(() => {
       this.clear();
       this.ref.close();
     });
-  }
+  };
 
   editPost = (post: Posts, form: any): void => {
     this.currentPost = Object.assign({}, post);
@@ -54,7 +61,6 @@ export class PostsComponent implements OnInit {
         this.posts.unshift(post);
         swal('Upadted....', 'Post Updated Successfully', 'success').then(() => {
           this.clear();
-          this.ref.close();
         });
       }
     });
@@ -64,15 +70,17 @@ export class PostsComponent implements OnInit {
     this.ref = this.modalService.open(form, {
       centered: true,
     });
-  }
+  };
 
   clear = () => {
     this.currentPost = {
       id: 0,
       title: '',
-      body: ''
-    }
-  }
+      body: '',
+    };
+    this.isEdit = false;
+    this.ref.close();
+  };
 
   removePost = (post: Posts) => {
     swal({
@@ -81,14 +89,13 @@ export class PostsComponent implements OnInit {
       icon: 'warning',
       buttons: ['Cancel', true],
       dangerMode: true,
-    })
-    .then((willDelete) => {
+    }).then((willDelete) => {
       if (willDelete) {
         this.postService.deletePost(post.id).subscribe(() => {
           this.posts.forEach((cur, index) => {
             if (post.id === cur.id) {
               this.posts.splice(index, 1);
-              swal('Deleted..','Post Deleted successfully..', 'success')
+              swal('Deleted..', 'Post Deleted successfully..', 'success');
             }
           });
         });
@@ -99,5 +106,5 @@ export class PostsComponent implements OnInit {
         });
       }
     });
-  }
+  };
 }

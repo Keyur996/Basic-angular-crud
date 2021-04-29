@@ -6,7 +6,7 @@ import swal from 'sweetalert';
 @Component({
   selector: 'app-post-form',
   templateUrl: './post-form.component.html',
-  styleUrls: ['./post-form.component.css']
+  styleUrls: ['./post-form.component.css'],
 })
 export class PostFormComponent implements OnInit {
   @Output() newPost: EventEmitter<Posts> = new EventEmitter();
@@ -14,38 +14,37 @@ export class PostFormComponent implements OnInit {
   @Input() currentPost: Posts;
   @Input() isEdit: boolean;
 
-  constructor(private postService: PostsService) { }
+  constructor(private postService: PostsService) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
-  addPost = (title: string, body: string ): void => {
+  addPost = (title: string, body: string): void => {
     if (!title || !body) {
       swal({
         text: 'Title and body is required field',
-        title: 'Please Enter Data'
+        title: 'Please Enter Data',
       });
     } else {
-      this.postService.savePost({title, body} as Posts).subscribe(post => {
+      this.postService.savePost({ title, body } as Posts).subscribe((post) => {
         console.log(post);
         this.newPost.emit(post);
-      })
+      });
     }
-  }
+  };
 
   updatePost = (): void => {
-
-     if (!this.currentPost.title || !this.currentPost.body) {
+    if (!this.currentPost.title || !this.currentPost.body) {
       swal({
         text: 'Title and body is required field',
-        title: 'Please Enter Data'
+        title: 'Please Enter Data',
       });
     } else {
-       this.postService.updatePost(this.currentPost).subscribe(post => {
-      // console.log(post);
-      this.isEdit = false;
-      this.updatedPost.emit(post);
-    })
+      console.log(this.currentPost);
+      this.postService.updatePost(this.currentPost).subscribe((post) => {
+        // console.log(post);
+        this.isEdit = false;
+        this.updatedPost.emit(post);
+      });
     }
-  }
+  };
 }
