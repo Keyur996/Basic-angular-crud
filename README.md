@@ -1,4 +1,4 @@
-## General info ( [Live Demo] (https://suspicious-bartik-9e3ca6.netlify.app))
+## General info ( [Live Demo](https://dreamy-banach-20174f.netlify.app))
 CRUD using Angular. Aim for this project is to learn Angular Concept.
 	
 ## Technologies
